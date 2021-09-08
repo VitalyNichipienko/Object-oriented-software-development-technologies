@@ -1,0 +1,50 @@
+Destination - KRD
+Flight number - 467
+Departure time - 14:00
+Airplane type - Airplane
+
+Destination - SPB
+Flight number - 169
+Departure time - 14:00
+Airplane type - Airplane
+
+Destination - NSK
+Flight number - 358
+Departure time - 12:35
+Airplane type - Airplane
+
+Destination - KRD
+Flight number - 705
+Departure time - 10:25
+Airplane type - Airplane
+
+Destination - SPB
+Flight number - 827
+Departure time - 11:45
+Airplane type - Airplane
+
+Destination - KRD
+Flight number - 995
+Departure time - 12:35
+Airplane type - Airplane
+
+Destination - NSK
+Flight number - 436
+Departure time - 11:45
+Airplane type - Airplane
+
+Destination - NSK
+Flight number - 902
+Departure time - 13:00
+Airplane type - Airplane
+
+Destination - SPB
+Flight number - 382
+Departure time - 11:45
+Airplane type - Airplane
+
+Destination - KRD
+Flight number - 718
+Departure time - 10:25
+Airplane type - Airplane
+
