@@ -53,51 +53,83 @@ void Input(AIRPLANE* Airplane, int size)
 
 void Output(AIRPLANE* Airplane, int size)
 {
-    ofstream write;
-    write.open("Output.txt");
-    for (int i = 0; i < size; i++)
+    cout << "Output method" << endl;
+    cout << "1 - Console output, 2 - Output to file" << endl;
+    int command;
+    cin >> command;
+
+    if (command == 1)
     {
-        write << Airplane[i] << endl;
+        for (int i = 0; i < size; i++)
+        {
+            cout << Airplane[i] << endl;
+        }
     }
-    write.close();
+
+    if (command == 2)
+    {
+        ofstream write;
+        write.open("Output.txt", ofstream::out | ofstream::trunc);
+        for (int i = 0; i < size; i++)
+        {
+            write << Airplane[i] << endl;
+        }
+        write.close();
+        cout << "Successfully writed" << endl;
+    }
 }
 
 
 void Add(AIRPLANE*& Airplane, int& size)
 {
-    cout << "Enter 1 for file write or 2 for keyboard write" << endl;
+    cout << "1 - Adding from the file, 2 - Adding from the keyboard" << endl;
     int command;
     cin >> command;
 
-    AIRPLANE* newArray = new AIRPLANE[size + 1];
-    for (int i = 0; i < size; i++)
-    {
-        newArray[i] = Airplane[i];
-    }
 
-    if (command == 1) // Из файла
+    if (command == 1) 
     {
-        cout << "Enter file name for add" << endl;
         string fileName = "Add.txt";
-        cin >> fileName;
         ifstream read;
         read.open(fileName);
-        read >> newArray[size];
+
+        while (!read.eof())
+        {
+            AIRPLANE* newArray = new AIRPLANE[size + 1];
+            for (int i = 0; i < size; i++)
+            {
+                newArray[i] = Airplane[i];
+            }
+
+            read >> newArray[size];
+            cout << newArray[size] << endl;
+
+            size++;
+
+            delete[] Airplane;
+
+            Airplane = newArray;
+        }
         read.close();
     }
 
-    if (command == 2) // C клавиатуры
+    if (command == 2)
     {
+        AIRPLANE* newArray = new AIRPLANE[size + 1];
+        for (int i = 0; i < size; i++)
+        {
+            newArray[i] = Airplane[i];
+        }
+
         cout << "Enter new elem: name of the destination, flight number, departure time, aircraft type" << endl;
         cin >> newArray[size];
+
+        size++;
+
+        delete[] Airplane;
+
+        Airplane = newArray;
     }
-
-    ofstream write;
-    write.open("Output.txt", ostream::app);
-    write << newArray[size];
-    write.close();
-
-    size++;
 }
 
 
@@ -110,6 +142,7 @@ void Delete(AIRPLANE*& Airplane, int& size)
     string sign;
     cout << "Enter destination for removal: " << endl;
     cin >> sign;
+
     for (int i = 0; i < size; i++)
     {
         if (Airplane[i].getDestination() != sign)
@@ -126,7 +159,7 @@ void Delete(AIRPLANE*& Airplane, int& size)
 
     Airplane = newArray;
 
-    Output(Airplane, size);
+    cout << "Ticket successfully deleted" << endl;
 }
 
 
@@ -145,6 +178,8 @@ void Edit(AIRPLANE* Airplane, int size)
             cin >> Airplane[i];
         }
     }
+
+    cout << "Ticket successfully edited" << endl;
 }
 
 
@@ -190,14 +225,23 @@ void Select(AIRPLANE* Airplane, int size)
 
 void main()
 {
-    int size = 10;
+    cout << "Enter the count of plane tickets" << endl;
+    int size = 0;
+    cin >> size;
 
-    AIRPLANE* airplane = new AIRPLANE[size];
+    AIRPLANE *airplane = new AIRPLANE[size];
 
     Input(airplane, size);
 
     cout << "Array is full, what's next?" << endl;
-    cout << "1 - Add, 2 - Delete, 3 - Edit, 4 - Select" << endl;
+    cout << "1 - Input " << endl;
+    cout << "2 - Output" << endl;
+    cout << "3 - Add" << endl;
+    cout << "4 - Delete" << endl;
+    cout << "5 - Edit" << endl;
+    cout << "6 - Select" << endl;
+    cout << "7 - Help" << endl;
+    
     int command;
 
     while (true)
@@ -206,26 +250,50 @@ void main()
 
         if (command == 1)
         {
+            cout << "Input" << endl;
+            Input(airplane, size);
+        }
+
+        if (command == 2)
+        {
+            cout << "Output" << endl;
+            Output(airplane, size);
+        }
+
+        if (command == 3)
+        {
             cout << "Add" << endl;
             Add(airplane, size);
         }
 
-        if (command == 2)
+        if (command == 4)
         {
             cout << "Delete" << endl;
             Delete(airplane, size);
         }
 
-        if (command == 3)
+        if (command == 5)
         {
             cout << "Edit" << endl;
             Edit(airplane, size);
         }
 
-        if (command == 4)
+        if (command == 6)
         {
             cout << "Select" << endl;
             Select(airplane, size);
+        }
+
+        if (command == 7)
+        {
+            cout << "Array is full, what's next?" << endl;
+            cout << "1 - Input " << endl;
+            cout << "2 - Output" << endl;
+            cout << "3 - Add" << endl;
+            cout << "4 - Delete" << endl;
+            cout << "5 - Edit" << endl;
+            cout << "6 - Select" << endl;
+            cout << "7 - Help" << endl;
         }
     }
 }

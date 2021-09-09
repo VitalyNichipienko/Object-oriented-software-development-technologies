@@ -71,6 +71,7 @@ istream& operator >> (istream& in, AIRPLANE& airplane)
 	return in;
 }
 
+
 ostream& operator << (ostream& os, AIRPLANE& airplane) 
 {
 	os << "Destination - " << airplane.getDestination() << endl;

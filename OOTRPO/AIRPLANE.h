@@ -21,9 +21,11 @@ public:
 	#pragma region Ctor
 	
 	AIRPLANE();
+
 	~AIRPLANE();
 
 	#pragma endregion
+
 
 
 	#pragma region Methods
