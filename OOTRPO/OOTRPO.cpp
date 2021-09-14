@@ -1,11 +1,13 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include <unordered_set>
+#include <set>
 #include "AIRPLANE.h"
+
 using namespace std;
 
-
-void Input(AIRPLANE* Airplane, int size)
+void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 {
     cout << "Input method:" << endl;
     cout << "1 - manual input, 2 - input from file, 3 - generate array" << endl;
@@ -17,7 +19,11 @@ void Input(AIRPLANE* Airplane, int size)
         cout << "Enter: name of the destination, flight number, departure time, aircraft type" << endl;
         for (int i = 0; i < size; i++)
         {
-            cin >> Airplane[i];
+            AIRPLANE newAirplane;
+            cin >> newAirplane;
+            Airplane.insert(newAirplane);
+
+            cout << i << "of" << size << "tickets entered" << endl;
         }
     }
 
@@ -28,8 +34,10 @@ void Input(AIRPLANE* Airplane, int size)
         for (int i = 0; i < size; i++)
         {
             cout << "--- Flight ticket number [" << i << "] ---" << endl;
-            read >> Airplane[i];
-            cout << Airplane[i] << endl;
+            AIRPLANE newAirplane;
+            read >> newAirplane;
+            cout << newAirplane << endl;
+            Airplane.insert(newAirplane);
         }
         read.close();
     }
@@ -41,17 +49,19 @@ void Input(AIRPLANE* Airplane, int size)
         for (int i = 0; i < size; i++)
         {
             cout << "--- Flight ticket number [" << i << "] ---" << endl;
-            Airplane[i].setDestination(cityArray[rand() % 3]);
-            Airplane[i].setFlightNumber(to_string(rand() % 1000));
-            Airplane[i].setDepartureTime(timeArray[rand() % 5]);
-            Airplane[i].setAirplaneType("Airplane");
-            cout << Airplane[i] << endl;
+            AIRPLANE newAirplane;
+            newAirplane.setDestination(cityArray[rand() % 3]);
+            newAirplane.setFlightNumber(to_string(rand() % 1000));
+            newAirplane.setDepartureTime(timeArray[rand() % 5]);
+            newAirplane.setAirplaneType("Airplane");
+            cout << newAirplane << endl;
+            Airplane.insert(newAirplane);
         }
     }
 }
 
 
-void Output(AIRPLANE* Airplane, int size)
+void Output(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 {
     cout << "Output method" << endl;
     cout << "1 - Console output, 2 - Output to file" << endl;
@@ -60,27 +70,28 @@ void Output(AIRPLANE* Airplane, int size)
 
     if (command == 1)
     {
-        for (int i = 0; i < size; i++)
+        for (auto i = Airplane.begin(); i != Airplane.end(); i++)
         {
-            cout << Airplane[i] << endl;
+            cout << *i << endl;
         }
+        cout << "Successfully outputted" << endl;
     }
 
     if (command == 2)
     {
         ofstream write;
         write.open("Output.txt", ofstream::out | ofstream::trunc);
-        for (int i = 0; i < size; i++)
+        for (auto i = Airplane.begin(); i != Airplane.end(); i++)
         {
-            write << Airplane[i] << endl;
+            write << *i << endl;
         }
         write.close();
-        cout << "Successfully writed" << endl;
+        cout << "Successfully outputted" << endl;
     }
 }
 
 
-void Add(AIRPLANE*& Airplane, int& size)
+void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
 {
     cout << "1 - Adding from the file, 2 - Adding from the keyboard" << endl;
     int command;
@@ -95,45 +106,30 @@ void Add(AIRPLANE*& Airplane, int& size)
 
         while (!read.eof())
         {
-            AIRPLANE* newArray = new AIRPLANE[size + 1];
-            for (int i = 0; i < size; i++)
-            {
-                newArray[i] = Airplane[i];
-            }
+            AIRPLANE newAirplane;
+            read >> newAirplane;
 
-            read >> newArray[size];
-            cout << newArray[size] << endl;
+            cout << newAirplane << endl;
 
-            size++;
-
-            delete[] Airplane;
-
-            Airplane = newArray;
+            Airplane.insert(newAirplane);
         }
+
         read.close();
     }
 
     if (command == 2)
     {
-        AIRPLANE* newArray = new AIRPLANE[size + 1];
-        for (int i = 0; i < size; i++)
-        {
-            newArray[i] = Airplane[i];
-        }
+        AIRPLANE newAirplane;
 
         cout << "Enter new elem: name of the destination, flight number, departure time, aircraft type" << endl;
-        cin >> newArray[size];
-
-        size++;
-
-        delete[] Airplane;
-
-        Airplane = newArray;
+        cin >> newAirplane;
+        
+        Airplane.insert(newAirplane);
     }
 }
 
 
-void Delete(AIRPLANE*& Airplane, int& size)
+void Delete(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
 {
     cout << "Sign for removal - destination" << endl;
 
@@ -143,63 +139,66 @@ void Delete(AIRPLANE*& Airplane, int& size)
     cout << "Enter destination for removal: " << endl;
     cin >> sign;
 
-    for (int i = 0; i < size; i++)
+    for (auto i = Airplane.begin(); i != Airplane.end(); i++)
     {
-        if (Airplane[i].getDestination() != sign)
+        AIRPLANE newAirplane = *i;
+        if (newAirplane.getDestination() == sign)
         {
-            cout << "k = " << k << endl;
-            newArray[k] = Airplane[i];
-            cout << "New array elem = " << newArray[k].getDestination() << endl;
-            k = k + 1;
+            Airplane.erase(i);
         }
     }
-
-    size = k;
-    delete[] Airplane;
-
-    Airplane = newArray;
 
     cout << "Ticket successfully deleted" << endl;
 }
 
 
-void Edit(AIRPLANE* Airplane, int size)
+void Edit(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 {
     cout << " Enter the ticket number to change " << endl;
     string sign;
     cin >> sign;
 
-    for (int i = 0; i < size; i++)
+    int j = 0;
+    for (auto i = Airplane.begin(); i != Airplane.end(); i++)
     {
-        if (Airplane[i].getFlightNumber() == sign)
+        AIRPLANE newAirplane = *i;
+        if (newAirplane.getFlightNumber() == sign)
         {
-            cout << "Enter new ticket parameters" << endl;
-            cout << "Name of the destination, flight number, departure time, aircraft type" << endl;
-            cin >> Airplane[i];
+            break;
         }
+        j++;
     }
+
+    auto index = Airplane.begin();
+    advance(index, j);
+    Airplane.erase(index);
+
+    cout << "Enter new ticket parameters" << endl;
+    cout << "Name of the destination, flight number, departure time, aircraft type" << endl;
+
+    AIRPLANE newAirplane;
+    cin >> newAirplane;
+    Airplane.insert(newAirplane);
 
     cout << "Ticket successfully edited" << endl;
 }
 
 
-void Select(AIRPLANE* Airplane, int size)
+void Select(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 {
     cout << "Enter destination for search" << endl;
     string sign;
     cin >> sign;
-    AIRPLANE* searchArray1 = new AIRPLANE[size];
-    AIRPLANE* searchArray2 = new AIRPLANE[size];
-    int k = 0;
+    unordered_set<AIRPLANE, Hash, Equal> searchList1;
+    unordered_set<AIRPLANE, Hash, Equal> searchArray2;
 
-    for (int i = 0; i < size; i++)
+    for (auto i = Airplane.begin(); i != Airplane.end(); i++)
     {
-        if (Airplane[i].getDestination() == sign)
+        AIRPLANE newAirplane = *i;
+        if (newAirplane.getDestination() == sign)
         {
-            cout << "k = " << k << endl;
-            searchArray1[k] = Airplane[i];
-            cout << "Search 1, New array elem = " << searchArray1[k].getDestination() << endl;
-            k = k + 1;
+            searchList1.insert(newAirplane);
+            cout << "Search 1, Airplanes to destination = " << newAirplane.getDestination() << endl;
         }
     }
 
@@ -209,27 +208,28 @@ void Select(AIRPLANE* Airplane, int size)
     int j = 0;
     time_t signTime = (time_t)atoi(sign.c_str());
 
-    for (int i = 0; i < size; i++)
+    for (auto i = Airplane.begin(); i != Airplane.end(); i++)
     {
-        time_t time = (time_t)atoi(Airplane[i].getDepartureTime().c_str()) - signTime;
+        AIRPLANE newAirplane = *i;
+        time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
         if ((time <= 1) && (time >= 0))
         {
             cout << "j = " << j << " ";
-            searchArray2[j] = Airplane[i];
-            cout << "Search 2, New array elem = " << searchArray2[j].getDepartureTime() << endl;
+            searchArray2.insert(newAirplane);
+            cout << "Search 2, New array elem = " << newAirplane.getDepartureTime() << endl;
             j = j + 1;
         }
     }
 }
 
 
-void main()
+void main() 
 {
     cout << "Enter the count of plane tickets" << endl;
     int size = 0;
     cin >> size;
 
-    AIRPLANE *airplane = new AIRPLANE[size];
+    unordered_set<AIRPLANE, Hash, Equal> airplane;
 
     Input(airplane, size);
 

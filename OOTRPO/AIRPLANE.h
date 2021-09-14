@@ -1,12 +1,14 @@
 #pragma once
+#include <sstream>
 #include <iostream>
-#include <fstream>
 #include <string>
+
 using namespace std;
 
 class AIRPLANE
 {
 private:
+
 	#pragma region Fields
 
 	string destination;
@@ -18,10 +20,19 @@ private:
 
 
 public:
+
+	#pragma region Nested classes
+
+	friend class Hash;
+	friend class Equal;
+
+	#pragma endregion
+
+
+
 	#pragma region Ctor
 	
 	AIRPLANE();
-
 	~AIRPLANE();
 
 	#pragma endregion
@@ -40,9 +51,65 @@ public:
 	string getDepartureTime();
 	string getAirplaneType();
 
-	friend ostream& operator << (ostream& os, AIRPLANE& airplane);
 	friend istream& operator >> (istream& in, AIRPLANE& airplane);
+
+	template <typename charT, typename traits> 
+	friend basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& out, const AIRPLANE& airplane);
 
 	#pragma endregion
 };
 
+
+
+#pragma region Operators
+
+template <typename charT, typename traits>
+inline basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& out, const AIRPLANE& airplane)
+{
+	basic_ostringstream<charT, traits> s;
+
+	s.copyfmt(out);
+	s.width(0);
+
+	s << "Destination - " << airplane.destination << endl;
+	s << "Flight number - " << airplane.flightNumber << endl;
+	s << "Departure time - " << airplane.departureTime << endl;
+	s << "Airplane type - " << airplane.airplaneType << endl;
+
+	out << s.str();
+	return out;
+}
+
+#pragma endregion
+
+
+
+#pragma region Nested classes
+
+class Hash
+{
+public:
+	size_t operator() (const AIRPLANE& airplane) const
+	{
+		return hash<string>()(airplane.destination) ^
+			hash<string>()(airplane.flightNumber) ^
+			hash<string>()(airplane.departureTime) ^
+			hash<string>()(airplane.airplaneType);
+	}
+};
+
+
+class Equal
+{
+public:
+	bool operator() (const AIRPLANE& airplane1, const AIRPLANE& airplane2) const
+	{
+		if (airplane1.destination == airplane2.destination &&
+			airplane1.flightNumber == airplane2.flightNumber &&
+			airplane1.departureTime == airplane2.departureTime)
+			return true;
+		return false;
+	}
+};
+
+#pragma endregion
