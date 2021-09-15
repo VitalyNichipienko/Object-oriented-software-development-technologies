@@ -106,7 +106,8 @@ public:
 	{
 		if (airplane1.destination == airplane2.destination &&
 			airplane1.flightNumber == airplane2.flightNumber &&
-			airplane1.departureTime == airplane2.departureTime)
+			airplane1.departureTime == airplane2.departureTime &&
+			airplane1.airplaneType == airplane2.airplaneType)
 			return true;
 		return false;
 	}
