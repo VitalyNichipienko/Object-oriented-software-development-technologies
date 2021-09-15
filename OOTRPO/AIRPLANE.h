@@ -26,6 +26,20 @@ public:
 	friend class Hash;
 	friend class Equal;
 
+
+	class AirplaneSortCriterion
+	{
+	public:
+
+		bool operator()(const AIRPLANE& airplane1, const AIRPLANE& airplane2) const
+		{
+			int time1 = stoi(airplane1.flightNumber);
+			int time2 = stoi(airplane2.flightNumber);
+
+			return time1 < time2 ? true : false;
+		}
+	};
+
 	#pragma endregion
 
 
@@ -108,8 +122,13 @@ public:
 			airplane1.flightNumber == airplane2.flightNumber &&
 			airplane1.departureTime == airplane2.departureTime &&
 			airplane1.airplaneType == airplane2.airplaneType)
+		{
 			return true;
-		return false;
+		}
+		else
+		{
+			return false;
+		}		
 	}
 };
 
