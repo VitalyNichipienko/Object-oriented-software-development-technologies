@@ -33,10 +33,10 @@ public:
 
 		bool operator()(const AIRPLANE& airplane1, const AIRPLANE& airplane2) const
 		{
-			int time1 = stoi(airplane1.flightNumber);
-			int time2 = stoi(airplane2.flightNumber);
+			int number1 = stoi(airplane1.flightNumber);
+			int number2 = stoi(airplane2.flightNumber);
 
-			return time1 < time2 ? true : false;
+			return number1 < number2 ? true : false;
 		}
 	};
 

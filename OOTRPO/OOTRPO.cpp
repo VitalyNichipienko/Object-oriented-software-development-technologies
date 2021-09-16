@@ -236,8 +236,6 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
 	cout << "Enter destination for search" << endl;
 	string sign;
 	cin >> sign;
-	unordered_set<AIRPLANE, Hash, Equal> searchList1;
-	unordered_set<AIRPLANE, Hash, Equal> searchArray2;
 
 	cout << "Search 1, Airplanes to destination = " << endl;
 
@@ -246,11 +244,9 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
 		AIRPLANE newAirplane = *i;
 		if (newAirplane.getDestination() == sign)
 		{
-			searchList1.insert(newAirplane);
-			cout << "Search 1, Airplanes to destination = " << newAirplane << endl;
+			cout << newAirplane << endl;
 		}
 	}
-
 
 	cout << "Enter time for search" << endl;
 	cin >> sign;
@@ -263,7 +259,6 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
 		time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
 		if ((time <= 1) && (time >= 0))
 		{
-			searchArray2.insert(newAirplane);
 			cout << newAirplane << endl;
 		}
 	}
@@ -272,12 +267,12 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
 
 void PrintContainerStructure(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
-	cout << "size: " << Airplane.size() << endl;
-	cout << "buckets: " << Airplane.bucket_count() << endl;
-	cout << "load factor: " << Airplane.load_factor() << endl;
-	cout << "max load factor: " << Airplane.max_load_factor() << endl;
+	cout << "Size: " << Airplane.size() << endl;
+	cout << "Buckets: " << Airplane.bucket_count() << endl;
+	cout << "Load factor: " << Airplane.load_factor() << endl;
+	cout << "Max load factor: " << Airplane.max_load_factor() << endl;
 
-	cout << "data: " << endl;
+	cout << "Data: " << endl;
 	for (int i = 0; i != Airplane.bucket_count(); i++)
 	{
 		if (Airplane.bucket_size(i) > 0)
