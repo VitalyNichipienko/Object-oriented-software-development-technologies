@@ -106,7 +106,7 @@ set<AIRPLANE, AIRPLANE::AirplaneSortCriterion> Sort(unordered_set<AIRPLANE, Hash
 }
 
 
-void Output(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
+void Output(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 {
 	set<AIRPLANE, AIRPLANE::AirplaneSortCriterion> sortedSet = Sort(Airplane);
 
@@ -138,7 +138,7 @@ void Output(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
 }
 
 
-void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
+void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
 	cout << "1 - Adding from the file, 2 - Adding from the keyboard" << endl;
 	int command;
@@ -176,12 +176,11 @@ void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
 }
 
 
-void Delete(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
+void Delete(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
 	cout << "Sign for removal - destination" << endl;
 
 	int k = 0;
-	AIRPLANE* newArray = new AIRPLANE[size];
 	string sign;
 	cout << "Enter destination for removal: " << endl;
 	cin >> sign;
@@ -199,7 +198,7 @@ void Delete(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int& size)
 }
 
 
-void Edit(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
+void Edit(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
 	cout << " Enter the ticket number to change " << endl;
 	string sign;
@@ -231,7 +230,7 @@ void Edit(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 }
 
 
-void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane, int size)
+void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 {
 	cout << "Enter destination for search" << endl;
 	string sign;
@@ -325,38 +324,38 @@ void main()
 		if (command == 2)
 		{
 			cout << "Output" << endl;
-			Output(airplane, size);
+			Output(airplane);
 		}
 
 		if (command == 3)
 		{
 			cout << "Add" << endl;
-			Add(airplane, size);
+			Add(airplane);
 		}
 
 		if (command == 4)
 		{
 			cout << "Delete" << endl;
-			Delete(airplane, size);
+			Delete(airplane);
 		}
 
 		if (command == 5)
 		{
 			cout << "Edit" << endl;
-			Edit(airplane, size);
+			Edit(airplane);
 		}
 
 		if (command == 6)
 		{
 			cout << "Select" << endl;
-			Select(airplane, size);
+			Select(airplane);
 		}
 
 		if (command == 7)
 		{
 			cout << "Print container structure" << endl;
 			PrintContainerStructure(airplane);
-			Add(airplane, size);
+			Add(airplane);
 			PrintContainerStructure(airplane);
 		}
 
