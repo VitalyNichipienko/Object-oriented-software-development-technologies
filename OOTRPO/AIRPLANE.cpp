@@ -71,15 +71,4 @@ istream& operator >> (istream& in, AIRPLANE& airplane)
 	return in;
 }
 
-
-ostream& operator << (ostream& os, AIRPLANE& airplane) 
-{
-	os << "Destination - " << airplane.getDestination() << endl;
-	os << "Flight number - " << airplane.getFlightNumber() << endl;
-	os << "Departure time - " << airplane.getDepartureTime() << endl;
-	os << "Airplane type - " << airplane.getAirplaneType() << endl;
-
-	return os;
-}
-
 #pragma endregion

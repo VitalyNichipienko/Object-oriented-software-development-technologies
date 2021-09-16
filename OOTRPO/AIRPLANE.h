@@ -1,7 +1,8 @@
 #pragma once
+#include <sstream>
 #include <iostream>
-#include <fstream>
 #include <string>
+
 using namespace std;
 
 class AIRPLANE
@@ -40,9 +41,33 @@ public:
 	string getDepartureTime();
 	string getAirplaneType();
 
-	friend ostream& operator << (ostream& os, AIRPLANE& airplane);
 	friend istream& operator >> (istream& in, AIRPLANE& airplane);
+
+	template <typename charT, typename traits>
+	friend basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& out, const AIRPLANE& airplane);
 
 	#pragma endregion
 };
 
+
+
+#pragma region Operators
+
+template <typename charT, typename traits>
+inline basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& out, const AIRPLANE& airplane)
+{
+	basic_ostringstream<charT, traits> s;
+
+	s.copyfmt(out);
+	s.width(0);
+
+	s << "Destination - " << airplane.destination << endl;
+	s << "Flight number - " << airplane.flightNumber << endl;
+	s << "Departure time - " << airplane.departureTime << endl;
+	s << "Airplane type - " << airplane.airplaneType << endl;
+
+	out << s.str();
+	return out;
+}
+
+#pragma endregion

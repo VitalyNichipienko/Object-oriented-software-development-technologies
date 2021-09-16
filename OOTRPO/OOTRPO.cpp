@@ -3,10 +3,12 @@
 #include <string>
 #include "AIRPLANE.h"
 #include <list>
+#include <vector>
+
 using namespace std;
 
 
-void Input(list<AIRPLANE> Airplane, int size)
+void Input(list<AIRPLANE>& Airplane, int size)
 {
     cout << "Input method:" << endl;
     cout << "1 - manual input, 2 - input from file, 3 - generate array" << endl;
@@ -20,9 +22,41 @@ void Input(list<AIRPLANE> Airplane, int size)
         {
             AIRPLANE newAirplane;
             cin >> newAirplane;
+
+            while (true)
+            {
+                vector<string> arr;
+                string inputStr = newAirplane.getDepartureTime();
+                string delim = ":";
+                size_t prev = 0;
+                size_t next;
+                size_t delta = delim.length();
+
+                while ((next = inputStr.find(delim, prev)) != string::npos)
+                {
+                    string tmp = inputStr.substr(prev, next - prev);
+                    arr.push_back(inputStr.substr(prev, next - prev));
+                    prev = next + delta;
+                }
+                arr.push_back(inputStr.substr(prev));
+
+                int watches = stoi(arr[0]);
+                int	minutes = stoi(arr[1]);
+
+                if (watches >= 24 || minutes >= 60 || arr.size() >= 3)
+                {
+                    cout << "Please enter the correct time, time format - \"HH:MM\" " << endl;
+                    string newTime;
+                    cin >> newTime;
+                    newAirplane.setDepartureTime(newTime);
+                    continue;
+                }
+                break;
+            }
+
             Airplane.push_back(newAirplane);
-            
-            cout << i  << "of" << size << "tickets entered" << endl;
+
+            cout << i + 1 << " of " << size << " tickets entered" << endl;
         }
     }
 
@@ -60,8 +94,21 @@ void Input(list<AIRPLANE> Airplane, int size)
 }
 
 
-void Output(list<AIRPLANE> Airplane, int size)
+void Sort(list<AIRPLANE>& Airplane)
 {
+    Airplane.sort([](AIRPLANE& airplane1, AIRPLANE& airplane2) 
+        {
+            int number1 = stoi(airplane1.getFlightNumber());
+            int number2 = stoi(airplane2.getFlightNumber());
+            return number1 < number2; 
+        });
+}
+
+
+void Output(list<AIRPLANE>& Airplane)
+{
+    Sort(Airplane);
+
     cout << "Output method" << endl;
     cout << "1 - Console output, 2 - Output to file" << endl;
     int command;
@@ -73,6 +120,7 @@ void Output(list<AIRPLANE> Airplane, int size)
         {
             cout << *i << endl;
         }
+        cout << "Successfully outputed" << endl;
     }
 
     if (command == 2)
@@ -86,12 +134,12 @@ void Output(list<AIRPLANE> Airplane, int size)
         }
 
         write.close();
-        cout << "Successfully writed" << endl;
+        cout << "Successfully outputed" << endl;
     }
 }
 
 
-void Add(list<AIRPLANE>& Airplane, int& size)
+void Add(list<AIRPLANE>& Airplane)
 {
     cout << "1 - Adding from the file, 2 - Adding from the keyboard" << endl;
     int command;
@@ -113,6 +161,7 @@ void Add(list<AIRPLANE>& Airplane, int& size)
             Airplane.push_back(newAirplane);
         }
         read.close();
+        cout << "Successfully added" << endl;
     }
 
     if (command == 2)
@@ -123,16 +172,16 @@ void Add(list<AIRPLANE>& Airplane, int& size)
         cin >> newAirplane;
 
         Airplane.push_back(newAirplane);
+        cout << "Successfully added" << endl;
     }
 }
 
 
-void Delete(list<AIRPLANE>& Airplane, int& size)
+void Delete(list<AIRPLANE>& Airplane)
 {
     cout << "Sign for removal - destination" << endl;
 
     int k = 0;
-    AIRPLANE* newArray = new AIRPLANE[size];
     string sign;
     cout << "Enter destination for removal: " << endl;
     cin >> sign;
@@ -146,11 +195,11 @@ void Delete(list<AIRPLANE>& Airplane, int& size)
         }
     }
 
-    cout << "Ticket successfully deleted" << endl;
+    cout << "Successfully deleted" << endl;
 }
 
 
-void Edit(list<AIRPLANE> Airplane, int size)
+void Edit(list<AIRPLANE>& Airplane)
 {
     cout << " Enter the ticket number to change " << endl;
     string sign;
@@ -167,32 +216,30 @@ void Edit(list<AIRPLANE> Airplane, int size)
         }
     }
 
-    cout << "Ticket successfully edited" << endl;
+    cout << "Successfully edited" << endl;
 }
 
 
-void Select(list<AIRPLANE> Airplane, int size)
+void Select(list<AIRPLANE>& Airplane)
 {
     cout << "Enter destination for search" << endl;
     string sign;
     cin >> sign;
-    list<AIRPLANE> searchList1;
-    list<AIRPLANE> searchArray2;
+
+    cout << "Search 1, Airplanes to destination = " << endl;
 
     for (auto i = Airplane.begin(); i != Airplane.end(); i++)
     {
         AIRPLANE newAirplane = *i;
         if (newAirplane.getDestination() == sign)
         {
-            searchList1.push_back(newAirplane);
-            cout << "Search 1, Airplanes to destination = " << newAirplane.getDestination() << endl;
+            cout << newAirplane << endl;
         }
     }
 
-
     cout << "Enter time for search" << endl;
     cin >> sign;
-    int j = 0;
+    cout << "Search 2, Airplanes that departed within an hour after the specified time = " << endl;
     time_t signTime = (time_t)atoi(sign.c_str());
 
     for (auto i = Airplane.begin(); i != Airplane.end(); i++)
@@ -201,10 +248,7 @@ void Select(list<AIRPLANE> Airplane, int size)
         time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
         if ((time <= 1) && (time >= 0))
         {
-            cout << "j = " << j << " ";
-            searchArray2.push_back(newAirplane);
-            cout << "Search 2, New array elem = " << newAirplane.getDepartureTime() << endl;
-            j = j + 1;
+            cout << newAirplane << endl;
         }
     }
 }
@@ -216,7 +260,7 @@ void main()
     int size = 0;
     cin >> size;
 
-    list<AIRPLANE> airplane(size);
+    list<AIRPLANE> airplane;
 
     Input(airplane, size);
 
@@ -244,31 +288,31 @@ void main()
         if (command == 2)
         {
             cout << "Output" << endl;
-            Output(airplane, size);
+            Output(airplane);
         }
 
         if (command == 3)
         {
             cout << "Add" << endl;
-            Add(airplane, size);
+            Add(airplane);
         }
 
         if (command == 4)
         {
             cout << "Delete" << endl;
-            Delete(airplane, size);
+            Delete(airplane);
         }
 
         if (command == 5)
         {
             cout << "Edit" << endl;
-            Edit(airplane, size);
+            Edit(airplane);
         }
 
         if (command == 6)
         {
             cout << "Select" << endl;
-            Select(airplane, size);
+            Select(airplane);
         }
 
         if (command == 7)
