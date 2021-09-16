@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
+void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
 	cout << "Input method:" << endl;
 	cout << "1 - manual input, 2 - input from file, 3 - generate array" << endl;
@@ -16,6 +16,10 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 
 	if (command == 1)
 	{
+		cout << "Enter the count of plane tickets" << endl;
+		int size = 0;
+		cin >> size;
+
 		cout << "Enter: name of the destination, flight number, departure time, aircraft type" << endl;
 		for (int i = 0; i < size; i++)
 		{
@@ -63,12 +67,13 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 	{
 		ifstream read;
 		read.open("Input.txt");
-		for (int i = 0; i < size; i++)
+		while (!read.eof())
 		{
-			cout << "--- Flight ticket number [" << i << "] ---" << endl;
 			AIRPLANE newAirplane;
 			read >> newAirplane;
+
 			cout << newAirplane << endl;
+
 			Airplane.insert(newAirplane);
 		}
 		read.close();
@@ -76,6 +81,10 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane, int size)
 
 	if (command == 3)
 	{
+		cout << "Enter the count of plane tickets" << endl;
+		int size = 0;
+		cin >> size;
+
 		string cityArray[3] = { "NSK", "SPB", "KRD" };
 		string timeArray[5] = { "10:25", "11:45", "12:35", "13:00", "14:00" };
 		for (int i = 0; i < size; i++)
@@ -291,13 +300,9 @@ void PrintContainerStructure(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 
 void main()
 {
-	cout << "Enter the count of plane tickets" << endl;
-	int size = 0;
-	cin >> size;
-
 	unordered_set<AIRPLANE, Hash, Equal> airplane;
 
-	Input(airplane, size);
+	Input(airplane);
 
 	cout << "Array is full, what's next?" << endl;
 	cout << "1 - Input " << endl;
@@ -318,7 +323,7 @@ void main()
 		if (command == 1)
 		{
 			cout << "Input" << endl;
-			Input(airplane, size);
+			Input(airplane);
 		}
 
 		if (command == 2)
