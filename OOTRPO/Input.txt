@@ -7,4 +7,14 @@ KRD 995 12:00 Airplane
 NSK 436 11:00 Airplane
 NSK 902 13:00 Airplane
 SPB 382 11:00 Airplane
-KRD 718 10:00 Airplane
+KRD 788 10:00 Airplane
+KRD 427 14:00 Airplane
+SPB 189 14:00 Airplane
+NSK 318 12:00 Airplane
+KRD 795 10:00 Airplane
+SPB 847 11:00 Airplane
+KRD 905 12:00 Airplane
+NSK 436 11:00 Airplane
+NSK 962 13:00 Airplane
+SPB 372 11:00 Airplane
+KRD 709 10:00 Airplane
