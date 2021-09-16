@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include "AIRPLANE.h"
+#include <vector>
+
 using namespace std;
 
 
@@ -17,7 +19,42 @@ void Input(AIRPLANE* Airplane, int size)
         cout << "Enter: name of the destination, flight number, departure time, aircraft type" << endl;
         for (int i = 0; i < size; i++)
         {
-            cin >> Airplane[i];
+            AIRPLANE newAirplane;
+            cin >> newAirplane;
+
+            while (true)
+            {
+                vector<string> arr;
+                string inputStr = newAirplane.getDepartureTime();
+                string delim = ":";
+                size_t prev = 0;
+                size_t next;
+                size_t delta = delim.length();
+
+                while ((next = inputStr.find(delim, prev)) != string::npos)
+                {
+                    string tmp = inputStr.substr(prev, next - prev);
+                    arr.push_back(inputStr.substr(prev, next - prev));
+                    prev = next + delta;
+                }
+                arr.push_back(inputStr.substr(prev));
+
+                int watches = stoi(arr[0]);
+                int	minutes = stoi(arr[1]);
+
+                if (watches >= 24 || minutes >= 60 || arr.size() >= 3)
+                {
+                    cout << "Please enter the correct time, time format - \"HH:MM\" " << endl;
+                    string newTime;
+                    cin >> newTime;
+                    newAirplane.setDepartureTime(newTime);
+                    continue;
+                }
+                break;
+            }
+            Airplane[i] = newAirplane;
+
+            cout << i + 1 << " of " << size << " tickets entered" << endl;
         }
     }
 
@@ -64,6 +101,7 @@ void Output(AIRPLANE* Airplane, int size)
         {
             cout << Airplane[i] << endl;
         }
+        cout << "Successfully outputed" << endl;
     }
 
     if (command == 2)
@@ -75,7 +113,7 @@ void Output(AIRPLANE* Airplane, int size)
             write << Airplane[i] << endl;
         }
         write.close();
-        cout << "Successfully writed" << endl;
+        cout << "Successfully outputed" << endl;
     }
 }
 
@@ -85,7 +123,6 @@ void Add(AIRPLANE*& Airplane, int& size)
     cout << "1 - Adding from the file, 2 - Adding from the keyboard" << endl;
     int command;
     cin >> command;
-
 
     if (command == 1) 
     {
@@ -110,6 +147,7 @@ void Add(AIRPLANE*& Airplane, int& size)
 
             Airplane = newArray;
         }
+        cout << "Successfully added" << endl;
         read.close();
     }
 
@@ -122,13 +160,14 @@ void Add(AIRPLANE*& Airplane, int& size)
         }
 
         cout << "Enter new elem: name of the destination, flight number, departure time, aircraft type" << endl;
-        cin >> newArray[size];
 
+        cin >> newArray[size];
         size++;
 
         delete[] Airplane;
-
         Airplane = newArray;
+
+        cout << "Successfully added" << endl;
     }
 }
 
@@ -159,7 +198,7 @@ void Delete(AIRPLANE*& Airplane, int& size)
 
     Airplane = newArray;
 
-    cout << "Ticket successfully deleted" << endl;
+    cout << "Successfully deleted" << endl;
 }
 
 
@@ -179,7 +218,7 @@ void Edit(AIRPLANE* Airplane, int size)
         }
     }
 
-    cout << "Ticket successfully edited" << endl;
+    cout << "Successfully edited" << endl;
 }
 
 
@@ -188,25 +227,20 @@ void Select(AIRPLANE* Airplane, int size)
     cout << "Enter destination for search" << endl;
     string sign;
     cin >> sign;
-    AIRPLANE* searchArray1 = new AIRPLANE[size];
-    AIRPLANE* searchArray2 = new AIRPLANE[size];
-    int k = 0;
+
+    cout << "Search 1, Airplanes to destination = " << endl;
 
     for (int i = 0; i < size; i++)
     {
         if (Airplane[i].getDestination() == sign)
         {
-            cout << "k = " << k << endl;
-            searchArray1[k] = Airplane[i];
-            cout << "Search 1, New array elem = " << searchArray1[k].getDestination() << endl;
-            k = k + 1;
+            cout << Airplane[i] << endl;
         }
     }
 
-
     cout << "Enter time for search" << endl;
     cin >> sign;
-    int j = 0;
+    cout << "Search 2, Airplanes that departed within an hour after the specified time = " << endl;
     time_t signTime = (time_t)atoi(sign.c_str());
 
     for (int i = 0; i < size; i++)
@@ -214,10 +248,7 @@ void Select(AIRPLANE* Airplane, int size)
         time_t time = (time_t)atoi(Airplane[i].getDepartureTime().c_str()) - signTime;
         if ((time <= 1) && (time >= 0))
         {
-            cout << "j = " << j << " ";
-            searchArray2[j] = Airplane[i];
-            cout << "Search 2, New array elem = " << searchArray2[j].getDepartureTime() << endl;
-            j = j + 1;
+            cout << Airplane[i] << endl;
         }
     }
 }
