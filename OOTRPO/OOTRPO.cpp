@@ -32,9 +32,8 @@ void Input(AIRPLANE* Airplane, int size)
         read.open("Input.txt");
         for (int i = 0; i < size; i++)
         {
-            cout << "--- Flight ticket number [" << i << "] ---" << endl;
             read >> Airplane[i];
-            cout << Airplane[i] << endl;
+            cout << "[" << i << "] " << rowOutput << Airplane[i] << endl;
         }
         read.close();
     }
