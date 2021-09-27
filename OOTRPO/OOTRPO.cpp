@@ -25,38 +25,6 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 		{
 			AIRPLANE newAirplane;
 			cin >> newAirplane;
-
-			while (true)
-			{				
-				vector<string> arr;
-				string inputStr = newAirplane.getDepartureTime();
-				string delim = ":";
-				size_t prev = 0;
-				size_t next;
-				size_t delta = delim.length();
-
-				while ((next = inputStr.find(delim, prev)) != string::npos)
-				{
-					string tmp = inputStr.substr(prev, next - prev);
-					arr.push_back(inputStr.substr(prev, next - prev));
-					prev = next + delta;
-				}
-				arr.push_back(inputStr.substr(prev));
-
-				int watches = stoi(arr[0]);
-				int	minutes = stoi(arr[1]);
-				
-				if (watches >= 24 || minutes >= 60 || arr.size() >= 3)
-				{
-					cout << "Please enter the correct time, time format - \"HH:MM\" " << endl;
-					string newTime;
-					cin >> newTime;
-					newAirplane.setDepartureTime(newTime);
-					continue;
-				}
-				break;
-			}
-
 			Airplane.insert(newAirplane);
 
 			cout << i + 1 << " of " << size << " tickets entered" << endl;
@@ -95,7 +63,7 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 			newAirplane.setFlightNumber(to_string(rand() % 1000));
 			newAirplane.setDepartureTime(timeArray[rand() % 5]);
 			newAirplane.setAirplaneType("Airplane");
-			cout << newAirplane << endl;
+			cout << rowOutput<< newAirplane << endl;
 			Airplane.insert(newAirplane);
 		}
 	}
@@ -124,12 +92,28 @@ void Output(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 	int command;
 	cin >> command;
 
+	cout << "Output format" << endl;
+	cout << "1 - Output in row, 2 - Output in column" << endl;
+	int format;
+	cin >> format;
+
 	if (command == 1)
 	{
-		for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+		if (format == 1)
 		{
-			cout << *i << endl;
+			for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+			{
+				cout << rowOutput << *i << endl;
+			}
 		}
+		if (format == 2)
+		{
+			for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+			{
+				cout << columnOutput << *i << endl;
+			}
+		}
+
 		cout << "Successfully outputted" << endl;
 	}
 
@@ -137,10 +121,22 @@ void Output(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 	{
 		ofstream write;
 		write.open("Output.txt", ofstream::out | ofstream::trunc);
-		for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+
+		if (format == 1)
 		{
-			write << *i << endl;
+			for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+			{
+				write << rowOutput << *i << endl;
+			}
 		}
+		if (format == 2)
+		{
+			for (auto i = sortedSet.begin(); i != sortedSet.end(); i++)
+			{
+				write << columnOutput << *i << endl;
+			}
+		}
+
 		write.close();
 		cout << "Successfully outputted" << endl;
 	}
@@ -164,7 +160,7 @@ void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 			AIRPLANE newAirplane;
 			read >> newAirplane;
 
-			cout << newAirplane << endl;
+			cout << rowOutput << newAirplane << endl;
 
 			Airplane.insert(newAirplane);
 		}
@@ -252,7 +248,7 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 		AIRPLANE newAirplane = *i;
 		if (newAirplane.getDestination() == sign)
 		{
-			cout << newAirplane << endl;
+			cout << columnOutput << newAirplane << endl;
 		}
 	}
 
@@ -267,7 +263,7 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 		time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
 		if ((time <= 1) && (time >= 0))
 		{
-			cout << newAirplane << endl;
+			cout << columnOutput << newAirplane << endl;
 		}
 	}
 }
@@ -288,7 +284,7 @@ void PrintContainerStructure(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 			cout << " b[" << i << "]: ";
 			for (auto pos = Airplane.begin(i); pos != Airplane.end(i); ++pos)
 			{
-				cout << *pos << "	";
+				cout << columnOutput << *pos << "	";
 			}
 			cout << endl;
 		}

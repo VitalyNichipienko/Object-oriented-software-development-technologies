@@ -2,8 +2,34 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
+
+
+
+#pragma region Custom flags
+
+const int specialIndex = ios_base::xalloc();
+
+template <typename charT, typename traits>
+inline basic_ostream <charT, traits>& rowOutput(basic_ostream<charT, traits>& out)
+{
+	out.iword(specialIndex) = true;
+	return out;
+}
+
+
+template <typename charT, typename traits>
+inline basic_ostream<charT, traits>& columnOutput(basic_ostream<charT, traits>& out)
+{
+	out.iword(specialIndex) = false;
+	return out;
+}
+
+#pragma endregion
+
+
 
 class AIRPLANE
 {
@@ -85,16 +111,23 @@ inline basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& 
 	s.copyfmt(out);
 	s.width(0);
 
-	s << "Destination - " << airplane.destination << endl;
-	s << "Flight number - " << airplane.flightNumber << endl;
-	s << "Departure time - " << airplane.departureTime << endl;
-	s << "Airplane type - " << airplane.airplaneType << endl;
+	if (s.iword(specialIndex))
+	{
+		s << "Destination - " << airplane.destination << endl;
+		s << "Flight number - " << airplane.flightNumber << endl;
+		s << "Departure time - " << airplane.departureTime << endl;
+		s << "Airplane type - " << airplane.airplaneType << endl;
+	}
+	else
+	{
+		s << airplane.destination << " " << airplane.flightNumber << " " << airplane.departureTime << " " << airplane.airplaneType;
+	}
 
 	out << s.str();
 	return out;
 }
 
-#pragma endregion
+#pragma endregion 
 
 
 
