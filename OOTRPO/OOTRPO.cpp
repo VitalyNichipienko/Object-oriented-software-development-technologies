@@ -97,14 +97,14 @@ void Output(AIRPLANE* Airplane, int size)
         {
             for (int i = 0; i < size; i++)
             {
-                write << Airplane[i] << endl;
+                write << rowOutput << Airplane[i] << endl;
             }
         }
         if (format == 2)
         {
             for (int i = 0; i < size; i++)
             {
-                write << Airplane[i] << endl;
+                write << columnOutput << Airplane[i] << endl;
             }
         }
 
@@ -230,7 +230,7 @@ void Select(AIRPLANE* Airplane, int size)
     {
         if (Airplane[i].getDestination() == sign)
         {
-            cout << Airplane[i] << endl;
+            cout << columnOutput << Airplane[i] << endl;
         }
     }
 
@@ -244,7 +244,7 @@ void Select(AIRPLANE* Airplane, int size)
         time_t time = (time_t)atoi(Airplane[i].getDepartureTime().c_str()) - signTime;
         if ((time <= 1) && (time >= 0))
         {
-            cout << Airplane[i] << endl;
+            cout << columnOutput << Airplane[i] << endl;
         }
     }
 }
