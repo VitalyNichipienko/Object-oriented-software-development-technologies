@@ -41,7 +41,7 @@ void Input(list<AIRPLANE>& Airplane)
             AIRPLANE newAirplane;
             read >> newAirplane;
 
-            cout << newAirplane << endl;
+            cout << rowOutput << newAirplane << endl;
 
             Airplane.push_back(newAirplane);
         }
@@ -58,13 +58,12 @@ void Input(list<AIRPLANE>& Airplane)
         string timeArray[5] = { "10:25", "11:45", "12:35", "13:00", "14:00" };
         for (int i = 0; i < size; i++)
         {
-            cout << "--- Flight ticket number [" << i << "] ---" << endl;
             AIRPLANE newAirplane;
             newAirplane.setDestination(cityArray[rand() % 3]);
             newAirplane.setFlightNumber(to_string(rand() % 1000));
             newAirplane.setDepartureTime(timeArray[rand() % 5]);
             newAirplane.setAirplaneType("Airplane");
-            cout << rowOutput << newAirplane << endl;
+            cout << "[" << i << "] "<< rowOutput << newAirplane << endl;
             Airplane.push_back(newAirplane);
         }
     }
