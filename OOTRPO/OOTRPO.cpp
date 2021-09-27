@@ -40,7 +40,7 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 			AIRPLANE newAirplane;
 			read >> newAirplane;
 
-			cout << newAirplane << endl;
+			cout << rowOutput <<newAirplane << endl;
 
 			Airplane.insert(newAirplane);
 		}
@@ -57,13 +57,12 @@ void Input(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 		string timeArray[5] = { "10:25", "11:45", "12:35", "13:00", "14:00" };
 		for (int i = 0; i < size; i++)
 		{
-			cout << "--- Flight ticket number [" << i << "] ---" << endl;
 			AIRPLANE newAirplane;
 			newAirplane.setDestination(cityArray[rand() % 3]);
 			newAirplane.setFlightNumber(to_string(rand() % 1000));
 			newAirplane.setDepartureTime(timeArray[rand() % 5]);
 			newAirplane.setAirplaneType("Airplane");
-			cout << rowOutput<< newAirplane << endl;
+			cout << "[" << i << "] " << rowOutput<< newAirplane << endl;
 			Airplane.insert(newAirplane);
 		}
 	}
@@ -284,7 +283,7 @@ void PrintContainerStructure(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 			cout << " b[" << i << "]: ";
 			for (auto pos = Airplane.begin(i); pos != Airplane.end(i); ++pos)
 			{
-				cout << columnOutput << *pos << "	";
+				cout << rowOutput << *pos << "	";
 			}
 			cout << endl;
 		}
