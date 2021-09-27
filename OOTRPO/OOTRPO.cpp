@@ -26,38 +26,6 @@ void Input(list<AIRPLANE>& Airplane)
         {
             AIRPLANE newAirplane;
             cin >> newAirplane;
-
-            while (true)
-            {
-                vector<string> arr;
-                string inputStr = newAirplane.getDepartureTime();
-                string delim = ":";
-                size_t prev = 0;
-                size_t next;
-                size_t delta = delim.length();
-
-                while ((next = inputStr.find(delim, prev)) != string::npos)
-                {
-                    string tmp = inputStr.substr(prev, next - prev);
-                    arr.push_back(inputStr.substr(prev, next - prev));
-                    prev = next + delta;
-                }
-                arr.push_back(inputStr.substr(prev));
-
-                int watches = stoi(arr[0]);
-                int	minutes = stoi(arr[1]);
-
-                if (watches >= 24 || minutes >= 60 || arr.size() >= 3)
-                {
-                    cout << "Please enter the correct time, time format - \"HH:MM\" " << endl;
-                    string newTime;
-                    cin >> newTime;
-                    newAirplane.setDepartureTime(newTime);
-                    continue;
-                }
-                break;
-            }
-
             Airplane.push_back(newAirplane);
 
             cout << i + 1 << " of " << size << " tickets entered" << endl;
@@ -96,7 +64,7 @@ void Input(list<AIRPLANE>& Airplane)
             newAirplane.setFlightNumber(to_string(rand() % 1000));
             newAirplane.setDepartureTime(timeArray[rand() % 5]);
             newAirplane.setAirplaneType("Airplane");
-            cout << newAirplane << endl;
+            cout << rowOutput << newAirplane << endl;
             Airplane.push_back(newAirplane);
         }
     }
@@ -123,12 +91,28 @@ void Output(list<AIRPLANE>& Airplane)
     int command;
     cin >> command;
 
+    cout << "Output format" << endl;
+    cout << "1 - Output in row, 2 - Output in column" << endl;
+    int format;
+    cin >> format;
+
     if (command == 1)
     {
-        for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+        if (format == 1)
         {
-            cout << *i << endl;
+            for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+            {
+                cout << rowOutput << *i << endl;
+            }
         }
+        if (format == 2)
+        {
+            for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+            {
+                cout << columnOutput << *i << endl;
+            }
+        }
+
         cout << "Successfully outputed" << endl;
     }
 
@@ -137,9 +121,19 @@ void Output(list<AIRPLANE>& Airplane)
         ofstream write;
         write.open("Output.txt", ofstream::out | ofstream::trunc);
 
-        for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+        if (format == 1)
         {
-            write << *i << endl;
+            for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+            {
+                write << rowOutput << *i << endl;
+            }
+        }
+        if (format == 2)
+        {
+            for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+            {
+                write << columnOutput << *i << endl;
+            }
         }
 
         write.close();
@@ -165,7 +159,7 @@ void Add(list<AIRPLANE>& Airplane)
             AIRPLANE newAirplane;
             read >> newAirplane;
 
-            cout << newAirplane << endl;
+            cout << rowOutput << newAirplane << endl;
 
             Airplane.push_back(newAirplane);
         }
@@ -242,7 +236,7 @@ void Select(list<AIRPLANE>& Airplane)
         AIRPLANE newAirplane = *i;
         if (newAirplane.getDestination() == sign)
         {
-            cout << newAirplane << endl;
+            cout << columnOutput << newAirplane << endl;
         }
     }
 
@@ -257,7 +251,7 @@ void Select(list<AIRPLANE>& Airplane)
         time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
         if ((time <= 1) && (time >= 0))
         {
-            cout << newAirplane << endl;
+            cout << columnOutput << newAirplane << endl;
         }
     }
 }

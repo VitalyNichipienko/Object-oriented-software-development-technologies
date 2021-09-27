@@ -24,7 +24,36 @@ void AIRPLANE::setFlightNumber(string flightNumber)
 
 void AIRPLANE::setDepartureTime(string departureTime)
 {
-	this->departureTime = departureTime;
+    while (true)
+    {
+        vector<string> arr;
+        string inputStr = departureTime;
+        string delim = ":";
+        size_t prev = 0;
+        size_t next;
+        size_t delta = delim.length();
+
+        while ((next = inputStr.find(delim, prev)) != string::npos)
+        {
+            string tmp = inputStr.substr(prev, next - prev);
+            arr.push_back(inputStr.substr(prev, next - prev));
+            prev = next + delta;
+        }
+        arr.push_back(inputStr.substr(prev));
+
+        int watches = stoi(arr[0]);
+        int	minutes = stoi(arr[1]);
+
+        if (watches >= 24 || watches < 0 || minutes >= 60 || minutes < 0 || arr.size() != 2)
+        {
+            cout << "Please enter the correct time, time format - \"HH:MM\" " << endl;
+            cin >> departureTime;
+            continue;
+        }
+        break;
+    }
+
+    this->departureTime = departureTime;
 }
 
 void AIRPLANE::setAirplaneType(string airplaneType)
