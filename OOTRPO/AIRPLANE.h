@@ -88,14 +88,14 @@ inline basic_ostream<charT, traits>& operator << (basic_ostream<charT, traits>& 
 
 	if (s.iword(specialIndex))
 	{
+		s << airplane.destination << " " << airplane.flightNumber << " " << airplane.departureTime << " " << airplane.airplaneType;
+	}
+	else
+	{
 		s << "Destination - " << airplane.destination << endl;
 		s << "Flight number - " << airplane.flightNumber << endl;
 		s << "Departure time - " << airplane.departureTime << endl;
 		s << "Airplane type - " << airplane.airplaneType << endl;
-	}
-	else
-	{
-		s << airplane.destination << " " << airplane.flightNumber << " " << airplane.departureTime << " " << airplane.airplaneType;
 	}
 
 	out << s.str();

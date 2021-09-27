@@ -45,12 +45,11 @@ void Input(AIRPLANE* Airplane, int size)
         string timeArray[5] = { "10:25", "11:45", "12:35", "13:00", "14:00" };
         for (int i = 0; i < size; i++)
         {
-            cout << "--- Flight ticket number [" << i << "] ---" << endl;
             Airplane[i].setDestination(cityArray[rand() % 3]);
             Airplane[i].setFlightNumber(to_string(rand() % 1000));
             Airplane[i].setDepartureTime(timeArray[rand() % 5]);
             Airplane[i].setAirplaneType("Airplane");
-            cout << rowOutput <<Airplane[i] << endl;
+            cout << "[" << i << "] " << rowOutput <<Airplane[i] << endl;
         }
     }
 }
