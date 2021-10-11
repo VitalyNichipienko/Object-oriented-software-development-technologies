@@ -66,6 +66,8 @@ public:
 	string getDepartureTime();
 	string getAirplaneType();
 
+	bool CheckTime(string time);
+
 	friend istream& operator >> (istream& in, AIRPLANE& airplane);
 
 	template <typename charT, typename traits>
