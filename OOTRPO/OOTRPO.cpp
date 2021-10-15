@@ -182,23 +182,28 @@ void Add(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 
 void Delete(unordered_set<AIRPLANE, Hash, Equal>& Airplane)
 {
-	cout << "Sign for removal - destination" << endl;
+	cout << "Sign for removal - Flight number" << endl;
 
-	int k = 0;
 	string sign;
-	cout << "Enter destination for removal: " << endl;
+	cout << "Enter Flight number for removal: " << endl;
 	cin >> sign;
 
-	for (auto i = Airplane.begin(); i != Airplane.end(); i++)
-	{
-		AIRPLANE newAirplane = *i;
-		if (newAirplane.getDestination() == sign)
+	unordered_set<AIRPLANE>::iterator iter;
+	iter = find_if(Airplane.begin(), Airplane.end(), [&](AIRPLANE currentAirplane)
 		{
-			Airplane.erase(i);
-		}
-	}
+			if (currentAirplane.getFlightNumber() == sign)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		});
 
-	cout << "Ticket successfully deleted" << endl;
+	Airplane.erase(iter);
+
+	cout << "Successfully deleted" << endl;
 }
 
 
@@ -242,28 +247,50 @@ void Select(unordered_set<AIRPLANE, Hash, Equal> Airplane)
 
 	cout << "Search 1, Airplanes to destination = " << endl;
 
-	for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+	unordered_set<AIRPLANE>::iterator iter;
+
+	iter = Airplane.begin();
+
+	while (iter != Airplane.end())
 	{
-		AIRPLANE newAirplane = *i;
-		if (newAirplane.getDestination() == sign)
-		{
-			cout << columnOutput << newAirplane << endl;
-		}
+		iter = find_if(iter, Airplane.end(), [&](AIRPLANE currentAirplane)
+			{
+				if (currentAirplane.getDestination() == sign)
+				{
+					cout << rowOutput << currentAirplane << endl;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		iter++;
 	}
 
 	cout << "Enter time for search" << endl;
 	cin >> sign;
 	cout << "Search 2, Airplanes that departed within an hour after the specified time = " << endl;
-	time_t signTime = (time_t)atoi(sign.c_str());	
+	time_t signTime = (time_t)atoi(sign.c_str());
 
-	for (auto i = Airplane.begin(); i != Airplane.end(); i++)
+	iter = Airplane.begin();
+
+	while (iter != Airplane.end())
 	{
-		AIRPLANE newAirplane = *i;
-		time_t time = (time_t)atoi(newAirplane.getDepartureTime().c_str()) - signTime;
-		if ((time <= 1) && (time >= 0))
-		{
-			cout << columnOutput << newAirplane << endl;
-		}
+		iter = find_if(iter, Airplane.end(), [&](AIRPLANE currentAirplane)
+			{
+				time_t time = (time_t)atoi(currentAirplane.getDepartureTime().c_str()) - signTime;
+				if ((time <= 1) && (time >= 0))
+				{
+					cout << rowOutput << currentAirplane << endl;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		iter++;
 	}
 }
 
